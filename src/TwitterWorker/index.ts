@@ -1,4 +1,5 @@
 import Twit from 'twit';
+import FileHelper from '../helpers/FileHelper';
 import Helpers from './helpers';
 import {
   MAX_REQUEST_DATA,
@@ -41,7 +42,8 @@ class TwitterWorker {
 
       const tweetData = Helpers.extractRequiredFields(statuses);
 
-      console.log(tweetData);
+      FileHelper.writeFileData(tweetData);
+      
     });
   }
 

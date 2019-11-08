@@ -1,4 +1,4 @@
-import moment from 'moment';
+import DateTimeHelper from '../helpers/DateTimeHelper';
 
 class Helpers {
   static extractRequiredFields(data: []) {
@@ -23,19 +23,19 @@ class Helpers {
   static getDate(strDate: string) {
     const date = Helpers.changeDateFormat(strDate);
   
-    return moment(date).format("DD.MM.YYYY");
+    return DateTimeHelper.formatDateTime(date, DateTimeHelper.FORMAT_DATE);
   }
 
   static getTime(strDate: string) {
     const date = Helpers.changeDateFormat(strDate);
   
-    return moment(date).format("HH:mm:ss");
+    return DateTimeHelper.formatDateTime(date, DateTimeHelper.FORMAT_TIME);
   }
 
   static getCreatedDateTime(strDate: string) {
     const date = Helpers.changeDateFormat(strDate);
   
-    return moment(date).format("DD.MM.YYY HH:mm:ss");
+    return DateTimeHelper.formatDateTime(date, DateTimeHelper.FROMAT_DATE_TIME);
   }
 }
 
