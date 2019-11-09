@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { config } from 'dotenv';
 
 import TwitterWorker from './TwitterWorker';
@@ -17,12 +18,25 @@ function twitterWorkerSetup() {
   twitterWorker.recordData();
 }
 
+function swaggerSetup(app) {
+  const options = new DocumentBuilder()
+    .setTitle('Tweets API')
+    .setDescription('Get tweet statistic from specific topic')
+    .setVersion('1.0')
+    .setBasePath('api')
+    .build();
+  const document = SwaggerModule.createDocument(app, options);
+
+  SwaggerModule.setup('', app, document);
+}
+
 async function bootstrap() {
   config();
   twitterWorkerSetup();
 
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
+  swaggerSetup(app);
 
   await app.listen(process.env.PORT);
 }
