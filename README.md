@@ -17,6 +17,9 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+
+# Swagger documentation
+- http://localhost:3500
 ```
 
 ## Test
