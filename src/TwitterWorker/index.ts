@@ -7,6 +7,7 @@ import {
   MAX_REQUEST_DATA,
   RESULT_TYPE,
   SEARCH_ENDPOINT,
+  CRON_JOB_TIMER,
 } from './constants';
 
 class TwitterWorker {
@@ -50,7 +51,7 @@ class TwitterWorker {
 
       FileHelper.writeFileData(tweetData);
   
-      console.log(`Worker started: ${DateTimeHelper.getTodayDateTime()}`);
+      console.log(`Worker started at: ${DateTimeHelper.getTodayDateTime()}`);
     });
   }
 
@@ -60,7 +61,7 @@ class TwitterWorker {
    * @param topic 
    */
   public run(topic) {
-    job("*/10 * * * * *", () => this.recordData(topic)).start();
+    job(CRON_JOB_TIMER, () => this.recordData(topic)).start();
   }
 
   private _searchTopicData(topic, cbResponse) {

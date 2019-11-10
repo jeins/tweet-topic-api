@@ -47,6 +47,8 @@ class FileHelpers {
         const idsOfPreviousData = previousData.map(({ id }) => id);
         const filteredNewData = data.filter((d) => !idsOfPreviousData.includes(d.id));
 
+        console.log(`total new data ${filteredNewData.length}`);
+
         return [...previousData, ...filteredNewData];
     }
 }
