@@ -9,6 +9,13 @@ class TweetService {
     this.tweetData = FileHelper.readFileData();
   }
 
+  /**
+   * find all tweet data from selected date
+   * 
+   * @param selectedDate 
+   * 
+   * @return [TweetDao]
+   */
   public findAllFromDate(selectedDate: string): any {
     return this.tweetData
         .filter(({ date }: TweetDao) => date === selectedDate)
@@ -18,6 +25,18 @@ class TweetService {
         }));
   }
 
+  /**
+   * get total tweet and users from each hour
+   * from specific date
+   * 
+   * @param selectedDate 
+   * @return [
+   *    {
+   *        totalTweets: 0,
+   *        totalUniqueUsers: 0,
+   *    }
+   * ]
+   */
   public getTotalTweetAndUserByHours(selectedDate: string) {
     const tweet = this.findAllFromDate(selectedDate);
     const data = [];

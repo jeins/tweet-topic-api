@@ -1,5 +1,7 @@
 import Twit from 'twit';
+import { job } from 'cron';
 import FileHelper from '../helpers/FileHelper';
+import DateTimeHelper from '../helpers/DateTimeHelper';
 import Helpers from './helpers';
 import {
   MAX_REQUEST_DATA,
@@ -9,7 +11,6 @@ import {
 
 class TwitterWorker {
   private twitterClient: Twit;
-  private topic: string;
 
   constructor(
     consumerKey: string,
@@ -25,14 +26,19 @@ class TwitterWorker {
     });
   }
 
-  public setTopic(topic: string) {
-    this.topic = topic;
-  }
+  /**
+   * record tweet from specific topic 
+   * then save the data to a file json
+   * 
+   * @param topic 
+   */
+  public recordData(topic) {
+    if(!topic) {
+        console.error("no topic added!");
+        return;
+    };
 
-  public recordData() {
-    if(!this.topic) return;
-
-    this._searchTopicData((err, data, response) => {
+    this._searchTopicData(topic, (err, data, response) => {
       if (err || !Object.keys(data).length || !data.statuses.length) {
         console.error("no data found!");
         return;
@@ -43,15 +49,25 @@ class TwitterWorker {
       const tweetData = Helpers.extractRequiredFields(statuses);
 
       FileHelper.writeFileData(tweetData);
-      
+  
+      console.log(`Worker started: ${DateTimeHelper.getTodayDateTime()}`);
     });
   }
 
-  private _searchTopicData(cbResponse) {
+  /**
+   * cron job to run recordData
+   * 
+   * @param topic 
+   */
+  public run(topic) {
+    job("*/10 * * * * *", () => this.recordData(topic)).start();
+  }
+
+  private _searchTopicData(topic, cbResponse) {
     this.twitterClient.get(
       SEARCH_ENDPOINT,
       {
-        q: `"${this.topic}"`,
+        q: `"${topic}"`,
         count: MAX_REQUEST_DATA,
         result_type: RESULT_TYPE,
       }, cbResponse);

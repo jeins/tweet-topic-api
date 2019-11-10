@@ -13,9 +13,8 @@ function twitterWorkerSetup() {
     process.env.TWITTER_API_TOKEN_SECRET,
   );
 
-  const twitterTopic = process.env.TWITTER_TOPIC;
-  twitterWorker.setTopic(twitterTopic);
-  twitterWorker.recordData();
+  const topic = process.env.TWITTER_TOPIC;
+  twitterWorker.run(topic);
 }
 
 function swaggerSetup(app) {
@@ -32,11 +31,11 @@ function swaggerSetup(app) {
 
 async function bootstrap() {
   config();
-  twitterWorkerSetup();
 
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   swaggerSetup(app);
+  twitterWorkerSetup();
 
   await app.listen(process.env.PORT);
 }

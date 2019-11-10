@@ -12,6 +12,13 @@ const FROMAT_DATE_TIME = `${FORMAT_DATE} ${FORMAT_TIME}`;
 const getToday = () => moment().format(FORMAT_DATE);
 
 /**
+ * get today date time from default format
+ * 
+ * @return string
+ */
+const getTodayDateTime = () => moment().format(FROMAT_DATE_TIME);
+
+/**
  * change date time to specific format
  * or extract the date / time
  * 
@@ -53,6 +60,7 @@ export default {
   FROMAT_DATE_TIME,
 
   getToday,
+  getTodayDateTime,
   formatDateTime,
   isDateValid,
 };

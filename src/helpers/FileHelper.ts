@@ -19,7 +19,8 @@ class FileHelpers {
     }
 
     /**
-     * write json data to db file
+     * write unique json data to db file
+     * filter data before save check if id already exist or not
      * 
      * @param jsonData 
      */
@@ -33,6 +34,13 @@ class FileHelpers {
         writeFileSync(DATA_FILE, data);
     }
 
+    /**
+     * comparing previous data & new data
+     * filter based on id to getting unique id and merge the data
+     * 
+     * @param data 
+     * @return []
+     */
     private static _getUniqueData(data: any) {
         const previousData = FileHelpers.readFileData();
 
